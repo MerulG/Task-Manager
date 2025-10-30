@@ -7,7 +7,10 @@ public class HelloController {
 
     @GetMapping("/")
     public String index() {
-        return "Yeeeeeeee3";
+        Blank blank = new Blank();
+        blank.setBlankString("LOMBOKTEST2");
+        System.out.println(blank.getBlankString());
+        return "DEVTOOLSTEST5";
     }
 
 }

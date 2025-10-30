@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Task {
     private int id;
-    private String name;
+    private String title;
     private String description;
+    private String priority;
     private String status;
 }

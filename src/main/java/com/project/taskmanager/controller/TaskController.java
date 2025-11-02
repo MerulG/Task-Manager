@@ -15,7 +15,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
-
     private Integer nextId = 6;
 
     List<Task> tasks = new ArrayList<>(List.of(

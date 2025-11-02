@@ -1,6 +1,6 @@
-package com.project.taskmanager.springboot;
+package com.project.taskmanager.controller;
 
-import com.project.taskmanager.Task;
+import com.project.taskmanager.model.Task;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

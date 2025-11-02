@@ -1,4 +1,4 @@
-package com.project.taskmanager;
+package com.project.taskmanager.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,12 +1,14 @@
 package com.project.taskmanager.dto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import java.time.LocalDateTime;
 
-import java.sql.Time;
-
+@Data
+@AllArgsConstructor
 public class TaskResponse {
-    private int id;
+    private Integer id;
     private String title;
     private String description;
     private String priority;
     private String status;
-    private Time responseTime;
 }

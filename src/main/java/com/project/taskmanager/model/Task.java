@@ -1,5 +1,7 @@
 package com.project.taskmanager.model;
 
+import com.project.taskmanager.enums.Priority;
+import com.project.taskmanager.enums.Status;
 import lombok.*;
 
 @Data
@@ -8,6 +10,6 @@ public class Task {
     private Integer id;
     private String title;
     private String description;
-    private String priority;
-    private String status;
+    private Priority priority;
+    private Status status;
 }

@@ -2,16 +2,15 @@ package com.project.taskmanager.controller;
 
 import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
+import com.project.taskmanager.enums.Priority;
+import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.model.Task;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.ArrayList;
-
-
 
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -20,11 +19,11 @@ public class TaskController {
     private Integer nextId = 6;
 
     List<Task> tasks = new ArrayList<>(List.of(
-            new Task(1, "title1", "description1", "priority1", "status1"),
-            new Task(2, "title2", "description2", "priority2", "status2"),
-            new Task(3, "title3", "description3", "priority3", "status3"),
-            new Task(4, "title4", "description4", "priority4", "status4"),
-            new Task(5, "title5", "description5", "priority5", "status5")
+            new Task(1, "title1", "description1", Priority.MEDIUM, Status.NOT_STARTED),
+            new Task(2, "title2", "description2", Priority.LOW, Status.NOT_STARTED),
+            new Task(3, "title3", "description3", Priority.MEDIUM, Status.IN_PROGRESS),
+            new Task(4, "title4", "description4", Priority.HIGH, Status.COMPLETE),
+            new Task(5, "title5", "description5", Priority.VERY_HIGH, Status.NOT_STARTED)
     ));
 
     private TaskResponse createTaskResponse(Task task){
@@ -42,8 +41,8 @@ public class TaskController {
                 nextId++,
                 taskRequest.getTitle(),
                 taskRequest.getDescription(),
-                taskRequest.getPriority().toString(),
-                taskRequest.getStatus().toString()
+                taskRequest.getPriority(),
+                taskRequest.getStatus()
         );
     }
 
@@ -90,8 +89,8 @@ public class TaskController {
         //update task
         existingTask.setTitle(taskRequest.getTitle());
         existingTask.setDescription(taskRequest.getDescription());
-        existingTask.setPriority(taskRequest.getPriority().toString());
-        existingTask.setStatus(taskRequest.getStatus().toString());
+        existingTask.setPriority(taskRequest.getPriority());
+        existingTask.setStatus(taskRequest.getStatus());
         return createTaskResponse(existingTask);
     }
 

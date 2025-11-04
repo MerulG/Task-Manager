@@ -21,7 +21,7 @@ public class TaskController {
             new Task(1, "title1", "description1", Priority.MEDIUM, Status.NOT_STARTED),
             new Task(2, "title2", "description2", Priority.LOW, Status.NOT_STARTED),
             new Task(3, "title3", "description3", Priority.MEDIUM, Status.IN_PROGRESS),
-            new Task(4, "title4", "description4", Priority.HIGH, Status.COMPLETE),
+            new Task(4, "title4", "description4", Priority.HIGH, Status.COMPLETED),
             new Task(5, "title5", "description5", Priority.VERY_HIGH, Status.NOT_STARTED)
     ));
 
@@ -62,7 +62,7 @@ public class TaskController {
         return taskResponses;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public TaskResponse getTaskById(@PathVariable Integer id) {
         Task taskFound = findTaskById(id);
         return createTaskResponse(taskFound);

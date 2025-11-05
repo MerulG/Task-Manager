@@ -5,6 +5,8 @@ import com.project.taskmanager.dto.TaskResponse;
 import com.project.taskmanager.enums.Priority;
 import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.model.Task;
+import com.project.taskmanager.service.TaskService;
+import com.project.taskmanager.service.impl.TaskServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,9 @@ import java.util.ArrayList;
 public class TaskController {
     private Integer nextId = 6;
 
-    List<Task> tasks = new ArrayList<>(List.of(
-            new Task(1, "title1", "description1", Priority.MEDIUM, Status.NOT_STARTED),
-            new Task(2, "title2", "description2", Priority.LOW, Status.NOT_STARTED),
-            new Task(3, "title3", "description3", Priority.MEDIUM, Status.IN_PROGRESS),
-            new Task(4, "title4", "description4", Priority.HIGH, Status.COMPLETED),
-            new Task(5, "title5", "description5", Priority.VERY_HIGH, Status.NOT_STARTED)
-    ));
+    private TaskService taskService;
+
+    //use task service to implement the methods - no buisness logic in controller
 
     private TaskResponse createTaskResponse(Task task){
         return new TaskResponse(
@@ -35,7 +33,7 @@ public class TaskController {
         );
     }
 
-    private Task createTask(TaskRequest taskRequest){
+    private Task createTaskFromRequest(TaskRequest taskRequest){
         return new Task(
                 nextId++,
                 taskRequest.getTitle(),
@@ -77,7 +75,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse addTask(@RequestBody @Valid TaskRequest taskRequest) {
-        Task newTask = createTask(taskRequest);
+        Task newTask = createTaskFromRequest(taskRequest);
         tasks.add(newTask);
         return createTaskResponse(newTask);
     }

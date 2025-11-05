@@ -25,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
             new Task(5, "title5", "description5", Priority.VERY_HIGH, Status.NOT_STARTED)
     ));
 
-    public Task createTaskFromRequest(TaskRequest taskRequest){
+    private Task createTaskFromRequest(TaskRequest taskRequest){
         return new Task(
                 nextId++,
                 taskRequest.getTitle(),
@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
         );
     }
 
-    public TaskResponse createTaskResponse(Task task){
+    private TaskResponse createTaskResponse(Task task){
         return new TaskResponse(
                 task.getId(),
                 task.getTitle(),
@@ -45,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
         );
     }
 
-    public Task findTaskById(Integer id){
+    private Task findTaskById(Integer id){
         return tasks.stream()
                 .filter(task -> task.getId().equals(id))
                 .findFirst()

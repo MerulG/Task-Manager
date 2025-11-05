@@ -10,8 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tasks")
-public class TaskController {
-    private TaskService taskService;
+public class TaskController{
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @GetMapping("/{id}")
     public TaskResponse getTask(@PathVariable Integer id) {
@@ -19,11 +23,12 @@ public class TaskController {
     }
 
     @GetMapping()
-    public List<TaskResponse> getTasks(@PathVariable Integer id) {
+    public List<TaskResponse> getTasks() {
         return taskService.getAllTasks();
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable Integer id) {
         taskService.deleteTaskById(id);
     }

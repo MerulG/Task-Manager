@@ -4,11 +4,10 @@ import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
 import com.project.taskmanager.enums.Priority;
 import com.project.taskmanager.enums.Status;
+import com.project.taskmanager.exception.TaskNotFoundException;
 import com.project.taskmanager.model.Task;
 import com.project.taskmanager.service.TaskService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +45,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private Task findTaskById(Integer id){
-        return tasks.stream()
-                .filter(task -> task.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found"));
+        for (Task task : tasks) {
+            if (task.getId().equals(id)) {
+                return task;
+            }
+        }
+        throw new TaskNotFoundException("Task not found");
     }
 
     @Override

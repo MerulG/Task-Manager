@@ -1,17 +1,20 @@
 package com.project.taskmanager.exception;
 
-import java.time.LocalDateTime;
+import lombok.Data;
+import java.time.Instant;
+import java.util.List;
 
+@Data
 public class ErrorResponse {
-    private LocalDateTime timestamp;
+    private final Object time;
     private int status;
-    private String message;
+    private List<String> messages;
     private String path;
 
-    public ErrorResponse(int status, String message, String path) {
-        this.timestamp = LocalDateTime.now();
+    public ErrorResponse(int status, List<String> messages, String path) {
+        this.time = Instant.now();
         this.status = status;
-        this.message = message;
+        this.messages = messages;
         this.path = path;
     }
 }

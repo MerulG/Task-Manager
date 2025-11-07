@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class TaskRequest {
     @NotBlank(message = "Title is required")
-    @Size(max = 20, message = "Title must be at most 255 characters")
+    @Size(max = 20, message = "Title must be at most 20 characters")
     private String title;
     @NotBlank(message = "Description is required")
     @Size(max = 255, message = "Description must be at most 255 characters")

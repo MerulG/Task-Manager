@@ -2,36 +2,33 @@ package com.project.taskmanager.service.impl;
 
 import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
-import com.project.taskmanager.enums.Priority;
-import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.exception.TaskNotFoundException;
 import com.project.taskmanager.model.Task;
+import com.project.taskmanager.repository.TaskRepository;
 import com.project.taskmanager.service.TaskService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
-    private Integer nextId = 6;
 
-    List<Task> tasks = new ArrayList<>(List.of(
-            new Task(1, "title1", "description1", Priority.MEDIUM, Status.NOT_STARTED),
-            new Task(2, "title2", "description2", Priority.LOW, Status.NOT_STARTED),
-            new Task(3, "title3", "description3", Priority.MEDIUM, Status.IN_PROGRESS),
-            new Task(4, "title4", "description4", Priority.HIGH, Status.COMPLETED),
-            new Task(5, "title5", "description5", Priority.VERY_HIGH, Status.NOT_STARTED)
-    ));
+    private final TaskRepository taskRepository;
+
+    public TaskServiceImpl(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     private Task createTaskFromRequest(TaskRequest taskRequest){
-        return new Task(
-                nextId++,
-                taskRequest.getTitle(),
-                taskRequest.getDescription(),
-                taskRequest.getPriority(),
-                taskRequest.getStatus()
-        );
+        Task newTask = new Task();
+        newTask.setTitle(taskRequest.getTitle());
+        newTask.setDescription(taskRequest.getDescription());
+        newTask.setPriority(taskRequest.getPriority());
+        newTask.setStatus(taskRequest.getStatus());
+        return newTask;
     }
 
     private TaskResponse createTaskResponse(Task task){
@@ -44,49 +41,53 @@ public class TaskServiceImpl implements TaskService {
         );
     }
 
-    private Task findTaskById(Integer id){
-        for (Task task : tasks) {
-            if (task.getId().equals(id)) {
-                return task;
-            }
+    public Task findTaskById(Integer id) {
+        Optional<Task> task = taskRepository.findById(id);
+        if(task.isEmpty()) {
+            throw new TaskNotFoundException("Task with id " + id + " not found");
         }
-        throw new TaskNotFoundException("Task not found");
+        return task.get();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TaskResponse getTask(Integer id) {
         return createTaskResponse(findTaskById(id));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TaskResponse> getAllTasks() {
+        List<Task> allTasks = taskRepository.findAll();
         List<TaskResponse> taskResponses = new ArrayList<>();
-        for(Task task : tasks) {
+        for(Task task : allTasks) {
             taskResponses.add(createTaskResponse(task));
         }
         return taskResponses;
     }
 
     @Override
+    @Transactional
     public void deleteTaskById(Integer id) {
-        Task task = findTaskById(id);
-        tasks.remove(task);
+        taskRepository.delete(findTaskById(id));
     }
 
     @Override
     public TaskResponse addTask(TaskRequest taskRequest) {
         Task task = createTaskFromRequest(taskRequest);
-        tasks.add(task);
+        task = taskRepository.save(task);
         return createTaskResponse(task);
     }
 
     @Override
+    @Transactional
     public TaskResponse updateTask(Integer id, TaskRequest taskRequest) {
         Task existingTask = findTaskById(id);
         existingTask.setTitle(taskRequest.getTitle());
         existingTask.setDescription(taskRequest.getDescription());
         existingTask.setPriority(taskRequest.getPriority());
         existingTask.setStatus(taskRequest.getStatus());
+        existingTask = taskRepository.save(existingTask);
         return createTaskResponse(existingTask);
     }
 }

@@ -3,8 +3,11 @@ package com.project.taskmanager.service.impl;
 import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
 import com.project.taskmanager.exception.TaskNotFoundException;
+import com.project.taskmanager.exception.UserNotFoundException;
 import com.project.taskmanager.model.Task;
+import com.project.taskmanager.model.User;
 import com.project.taskmanager.repository.TaskRepository;
+import com.project.taskmanager.repository.UserRepository;
 import com.project.taskmanager.service.TaskService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -17,17 +20,20 @@ import java.util.Optional;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-    public TaskServiceImpl(TaskRepository taskRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
-    private Task createTaskFromRequest(TaskRequest taskRequest){
+    private Task createTaskFromRequest(TaskRequest taskRequest, User user){
         Task newTask = new Task();
         newTask.setTitle(taskRequest.getTitle());
         newTask.setDescription(taskRequest.getDescription());
         newTask.setPriority(taskRequest.getPriority());
         newTask.setStatus(taskRequest.getStatus());
+        newTask.setUser(user);
         return newTask;
     }
 
@@ -47,6 +53,14 @@ public class TaskServiceImpl implements TaskService {
             throw new TaskNotFoundException("Task with id " + id + " not found");
         }
         return task.get();
+    }
+
+    public User findUserById(Integer id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()) {
+            throw new UserNotFoundException("User with id " + id + " not found");
+        }
+        return user.get();
     }
 
     @Override
@@ -73,8 +87,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse addTask(TaskRequest taskRequest) {
-        Task task = createTaskFromRequest(taskRequest);
+    public TaskResponse addTask(TaskRequest taskRequest, Integer userId) {
+        User user = findUserById(userId);
+        Task task = createTaskFromRequest(taskRequest, user);
         task = taskRepository.save(task);
         return createTaskResponse(task);
     }

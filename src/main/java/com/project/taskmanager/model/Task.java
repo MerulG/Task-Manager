@@ -15,6 +15,14 @@ public class Task {
     private Integer id;
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY) //only load tasks when needed
+    @JoinColumn(name = "user_id")
+    private User user;
 }

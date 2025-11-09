@@ -33,10 +33,10 @@ public class TaskController{
         taskService.deleteTaskById(id);
     }
 
-    @PostMapping
+    @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskResponse addTask(@RequestBody @Valid TaskRequest taskRequest) {
-        return taskService.addTask(taskRequest);
+    public TaskResponse addTask(@PathVariable Integer userId, @RequestBody @Valid TaskRequest taskRequest) {
+        return taskService.addTask(taskRequest, userId);
     }
 
     @PutMapping("/{id}")

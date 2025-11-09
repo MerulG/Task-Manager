@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidEnum(HttpMessageNotReadableException exception, HttpServletRequest request){
+    public ResponseEntity<ErrorResponse> handleInvalidEnumBody(HttpMessageNotReadableException exception, HttpServletRequest request){
         String message = "Invalid request body";
         if(exception.getCause() instanceof InvalidFormatException invalidFormatException) {
             Class<?> targetClass = invalidFormatException.getTargetType();
@@ -85,6 +86,31 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
         log.info("Invalid request body: {}", message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEnumParam(MethodArgumentTypeMismatchException exception, HttpServletRequest request){
+        String message = "Invalid value for request parameter";
+        Class<?> targetClass = exception.getRequiredType();
+        if(targetClass.isEnum()) {
+            //gets possible values for the enum causing problems
+            Object[] enumConstants = targetClass.getEnumConstants();
+            StringBuilder possibleValues = new StringBuilder();
+            for (int i = 0; i < enumConstants.length; i++) {
+                possibleValues.append(enumConstants[i].toString());
+                if (i < enumConstants.length - 1) {
+                    possibleValues.append(", ");
+                }
+            }
+            message = String.format("Invalid"+targetClass.getSimpleName()+" value. Possible values: %s", possibleValues);
+        }
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                List.of(message),
+                request.getRequestURI()
+        );
+        log.info("Invalid request parameter: {}", message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 

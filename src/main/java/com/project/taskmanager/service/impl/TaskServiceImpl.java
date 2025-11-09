@@ -2,6 +2,7 @@ package com.project.taskmanager.service.impl;
 
 import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
+import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.exception.TaskNotFoundException;
 import com.project.taskmanager.exception.UserNotFoundException;
 import com.project.taskmanager.model.Task;
@@ -47,6 +48,14 @@ public class TaskServiceImpl implements TaskService {
         );
     }
 
+    private List<TaskResponse> createTaskResponseList(List<Task> tasks){
+        List<TaskResponse> taskResponses = new ArrayList<>();
+        for(Task task : tasks) {
+            taskResponses.add(createTaskResponse(task));
+        }
+        return taskResponses;
+    }
+
     public Task findTaskById(Integer id) {
         Optional<Task> task = taskRepository.findById(id);
         if(task.isEmpty()) {
@@ -73,11 +82,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(readOnly = true)
     public List<TaskResponse> getAllTasks() {
         List<Task> allTasks = taskRepository.findAll();
-        List<TaskResponse> taskResponses = new ArrayList<>();
-        for(Task task : allTasks) {
-            taskResponses.add(createTaskResponse(task));
-        }
-        return taskResponses;
+        return createTaskResponseList(allTasks);
     }
 
     @Override
@@ -105,4 +110,30 @@ public class TaskServiceImpl implements TaskService {
         existingTask = taskRepository.save(existingTask);
         return createTaskResponse(existingTask);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<TaskResponse> getTasksByUserId(Integer userId){
+        List<Task> tasks = taskRepository.findByUserId(userId);
+        return createTaskResponseList(tasks);
+    }
+
+    @Override
+    public List<TaskResponse> getTasksByStatus(Status status) {
+        List<Task> tasks = taskRepository.findByStatus(status);
+        return createTaskResponseList(tasks);
+    }
+
+    @Override
+    public List<TaskResponse> getTasksByUserIdAndStatus(Integer userId, Status status) {
+        List<Task> tasks = taskRepository.findByUserIdAndStatus(userId, status);
+        return createTaskResponseList(tasks);
+    }
+
+    @Override
+    public List<TaskResponse> getTasksByTitle(String title) {
+        List<Task> tasks = taskRepository.findByTitleContainingIgnoreCase(title);
+        return createTaskResponseList(tasks);
+    }
+
 }

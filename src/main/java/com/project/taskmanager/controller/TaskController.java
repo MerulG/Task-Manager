@@ -5,9 +5,9 @@ import com.project.taskmanager.dto.TaskResponse;
 import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.service.TaskService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -23,9 +23,11 @@ public class TaskController{
         return taskService.getTask(id);
     }
 
-    @GetMapping()
-    public List<TaskResponse> getTasks() {
-        return taskService.getAllTasks();
+    @GetMapping
+    public Page<TaskResponse> getTasks(@RequestParam(defaultValue = "0") Integer page,
+                                       @RequestParam(defaultValue = "10") Integer numTasks,
+                                       @RequestParam(defaultValue = "id,asc") String sort){
+        return taskService.getTasks(page,numTasks,sort);
     }
 
     @DeleteMapping("/{id}")
@@ -46,23 +48,36 @@ public class TaskController{
     }
 
     @GetMapping("/user/{userId}")
-    public List<TaskResponse> getTasksByUserId(@PathVariable Integer userId) {
-        return taskService.getTasksByUserId(userId);
+    public Page<TaskResponse> getTasksByUserId(@RequestParam(defaultValue = "0") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer numTasks,
+                                               @RequestParam(defaultValue = "id,asc") String sort,
+                                               @PathVariable Integer userId) {
+        return taskService.getTasksByUserId(page,numTasks,sort,userId);
     }
 
     @GetMapping("/status/{status}")
-    public List<TaskResponse> getTasksByStatus(@PathVariable Status status) {
-        return taskService.getTasksByStatus(status);
+    public Page<TaskResponse> getTasksByStatus(@RequestParam(defaultValue = "0") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer numTasks,
+                                               @RequestParam(defaultValue = "id,asc") String sort,
+                                               @PathVariable Status status) {
+        return taskService.getTasksByStatus(page,numTasks,sort,status);
     }
 
     @GetMapping("/user/{userId}/status/{status}")
-    public List<TaskResponse> getTasksByUserIdAndStatus(@PathVariable Integer userId, @PathVariable Status status) {
-        return taskService.getTasksByUserIdAndStatus(userId, status);
+    public Page<TaskResponse> getTasksByUserIdAndStatus(@RequestParam(defaultValue = "0") Integer page,
+                                                        @RequestParam(defaultValue = "10") Integer numTasks,
+                                                        @RequestParam(defaultValue = "id,asc") String sort,
+                                                        @PathVariable Integer userId,
+                                                        @PathVariable Status status) {
+        return taskService.getTasksByUserIdAndStatus(page,numTasks,sort,userId, status);
     }
 
     @GetMapping("/search")
-    public List<TaskResponse> getTasksByTitle(@RequestParam String title) {
-        return taskService.getTasksByTitle(title);
+    public Page<TaskResponse> getTasksByTitle(@RequestParam(defaultValue = "0") Integer page,
+                                              @RequestParam(defaultValue = "10") Integer numTasks,
+                                              @RequestParam(defaultValue = "id,asc") String sort,
+                                              @RequestParam String title) {
+        return taskService.getTasksByTitle(page,numTasks,sort,title);
     }
 
 

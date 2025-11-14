@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
                         possibleValues.append(", ");
                     }
                 }
-                message = String.format("Invalid"+targetClass.getSimpleName()+" value. Possible values: %s", possibleValues);
+                message = String.format("Invalid "+targetClass.getSimpleName()+" value. Possible values: %s", possibleValues);
             }
         }
         ErrorResponse errorResponse = new ErrorResponse(
@@ -114,6 +114,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException exception, HttpServletRequest request){
+        String message = exception.getMessage() != null ? exception.getMessage() : "Invalid argument provided.";
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                List.of(message),
+                request.getRequestURI()
+        );
+        log.info("Invalid argument: {}", message);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception exception, HttpServletRequest request){
         ErrorResponse errorResponse = new ErrorResponse(
@@ -121,7 +133,7 @@ public class GlobalExceptionHandler {
                 List.of("Unexpected error occurred."),
                 request.getRequestURI()
         );
-        log.info("Unexpected error occurred:" + exception.getMessage());
+        log.info("Unexpected error occurred:" + exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 

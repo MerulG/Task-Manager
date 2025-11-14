@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 //Spring generates SQL and persistence logic automatically.
 public interface UserRepository extends JpaRepository<User, Integer> {
+    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 }

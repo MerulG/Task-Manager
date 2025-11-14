@@ -18,7 +18,7 @@ public class TaskController{
         this.taskService = taskService;
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("{id}")
     public TaskResponse getTask(@PathVariable Integer id) {
         return taskService.getTask(id);
     }

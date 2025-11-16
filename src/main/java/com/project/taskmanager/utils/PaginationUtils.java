@@ -33,7 +33,7 @@ public final class PaginationUtils {
             throw new IllegalArgumentException("Invalid sort field: " + sortBy);
         }
 
-        Sort.Direction direction = Sort.Direction.ASC;  // default
+        Sort.Direction direction = Sort.Direction.ASC;
         if (sortParts.length > 1) {
             String sortOrder = sortParts[1];
             if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")) {

@@ -4,7 +4,6 @@ import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
 import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.exception.TaskNotFoundException;
-import com.project.taskmanager.exception.UserNotFoundException;
 import com.project.taskmanager.model.Task;
 import com.project.taskmanager.model.User;
 import com.project.taskmanager.repository.TaskRepository;
@@ -102,7 +101,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional(readOnly = true)
     public Page<TaskResponse> getTasksByUserId(Integer page, Integer numTasks, String sort, Integer userId){
-        UserUtils.findUserById(userRepository, userId);;
+        UserUtils.findUserById(userRepository, userId);
         Pageable pageable = PaginationUtils.validateAndCreatePageable(page, numTasks, sort, ALLOWED_SORT_FIELDS);
         return taskRepository.findByUserId(userId, pageable).map(this::createTaskResponse);
     }
@@ -115,7 +114,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<TaskResponse> getTasksByUserIdAndStatus(Integer page, Integer numTasks, String sort, Integer userId, Status status) {
-        UserUtils.findUserById(userRepository, userId);;
+        UserUtils.findUserById(userRepository, userId);
         Pageable pageable = PaginationUtils.validateAndCreatePageable(page, numTasks, sort, ALLOWED_SORT_FIELDS);
         return taskRepository.findByUserIdAndStatus(userId, status, pageable).map(this::createTaskResponse);
     }

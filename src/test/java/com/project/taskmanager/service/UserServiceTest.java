@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -33,7 +33,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     @Test
-    public void shouldReturnUserByIdWhenExists(){
+    void shouldReturnUserByIdWhenExists(){
         //arrange
         User user = new User();
         user.setId(1);
@@ -46,7 +46,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldReturnAllUsers(){
+    void shouldReturnAllUsers(){
         //arrange
         User user1 = new User();
         user1.setId(1);
@@ -66,7 +66,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldCreateNewUser(){
+    void shouldCreateNewUser(){
         //arrange
         UserRequest request= new UserRequest();
         request.setUsername("test");
@@ -87,7 +87,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenAddingUserAndEmailExists(){
+    void shouldThrowExceptionWhenAddingUserAndEmailExists(){
         //arrange
         UserRequest request= new UserRequest();
         request.setEmail("test@email.com");
@@ -100,7 +100,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenAddingUserAndUsernameExists(){
+    void shouldThrowExceptionWhenAddingUserAndUsernameExists(){
         //arrange
         UserRequest request= new UserRequest();
         request.setUsername("test");
@@ -116,7 +116,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldDeleteUser(){
+    void shouldDeleteUser(){
         //arrange
         User user = new User();
         user.setId(1);
@@ -129,7 +129,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldUpdateUser(){
+    void shouldUpdateUser(){
         //arrange
         UserRequest request = new UserRequest();
         request.setEmail("email2@email");
@@ -155,7 +155,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUpdatingUserAndEmailExists(){
+    void shouldThrowExceptionWhenUpdatingUserAndEmailExists(){
         //arrange
         UserRequest request = new UserRequest();
         request.setEmail("email@email");
@@ -176,7 +176,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUpdatingUserAndUsernameExists(){
+    void shouldThrowExceptionWhenUpdatingUserAndUsernameExists(){
         //arrange
         UserRequest request = new UserRequest();
         request.setEmail("email@email");

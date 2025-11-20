@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserUtilsTest {
+class UserUtilsTest {
 
     @Mock
     private UserRepository userRepository;
@@ -24,7 +24,7 @@ public class UserUtilsTest {
     private UserUtils userUtils;
 
     @Test
-    public void shouldFindUserByIdWhenUserExists() {
+    void shouldFindUserByIdWhenUserExists() {
         //arrange
         User user = new User();
         user.setId(1);
@@ -38,7 +38,7 @@ public class UserUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUserDoesNotExists() {
+    void shouldThrowExceptionWhenUserDoesNotExists() {
         //arrange
         when(userRepository.findById(999)).thenReturn(Optional.empty());
         //act

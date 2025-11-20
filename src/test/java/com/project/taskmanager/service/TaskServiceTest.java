@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TaskServiceTest {
+class TaskServiceTest {
 
     @InjectMocks
     private TaskServiceImpl taskService;
@@ -39,7 +39,7 @@ public class TaskServiceTest {
 
 
     @Test
-    public void shouldReturnTaskWhenExists() {
+    void shouldReturnTaskWhenExists() {
         //arrange
         Task task = new Task();
         task.setId(1);
@@ -56,7 +56,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldThrowTaskNotFoundExceptionWhenNotFound(){
+    void shouldThrowTaskNotFoundExceptionWhenNotFound(){
         //arrange
         when(taskRepository.findById(999)).thenReturn(Optional.empty());
         //act
@@ -66,7 +66,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldReturnAllTasks(){
+    void shouldReturnAllTasks(){
         //arrange
         Task task1 = new Task();
         task1.setId(1);
@@ -89,7 +89,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldDeleteTask(){
+    void shouldDeleteTask(){
         //arrange
         Task task = new Task();
         task.setId(1);
@@ -101,7 +101,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldCreateNewTask(){
+    void shouldCreateNewTask(){
         //arrange
         TaskRequest request= new TaskRequest();
         request.setTitle("test");
@@ -122,7 +122,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldUpdateTestWithCorrectFields(){
+    void shouldUpdateTestWithCorrectFields(){
         //arrange
         TaskRequest request= new TaskRequest();
         request.setTitle("test2");
@@ -147,7 +147,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldReturnTasksByUserId(){
+    void shouldReturnTasksByUserId(){
         //arrange
         Task task1 = new Task();
         task1.setId(1);
@@ -172,7 +172,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldReturnTasksByStatus(){
+    void shouldReturnTasksByStatus(){
         //arrange
         Task task1 = new Task();
         task1.setId(1);
@@ -196,7 +196,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldReturnTaskByIdAndStatus(){
+    void shouldReturnTaskByIdAndStatus(){
         //arrange
         Task task1 = new Task();
         task1.setId(1);
@@ -219,7 +219,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    public void shouldReturnTaskByTitle(){
+    void shouldReturnTaskByTitle(){
         //arrange
         Task task1 = new Task();
         task1.setId(1);

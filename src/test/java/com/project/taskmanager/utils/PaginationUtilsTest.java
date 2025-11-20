@@ -10,10 +10,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PaginationUtilsTest {
+class PaginationUtilsTest {
 
     @Test
-    public void shouldReturnPageableWhenValuesCorrect(){
+    void shouldReturnPageableWhenValuesCorrect(){
         //arrange
         Integer page = 2;
         Integer numTasks = 10;
@@ -31,7 +31,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenPageIsLessThanZero() {
+    void shouldThrowExceptionWhenPageIsLessThanZero() {
         //arrange
         Integer page = -1;
         Integer numTasks = 10;
@@ -44,7 +44,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenPageIsMoreThanMaximum(){
+    void shouldThrowExceptionWhenPageIsMoreThanMaximum(){
         //arrange
         Integer page = 101;
         Integer numTasks = 10;
@@ -57,7 +57,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldAcceptLowerBoundPage(){
+    void shouldAcceptLowerBoundPage(){
         //arrange
         Integer page = 0;
         Integer numTasks = 10;
@@ -75,7 +75,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldAcceptUpperBoundPage(){
+    void shouldAcceptUpperBoundPage(){
         //arrange
         Integer page = 100;
         Integer numTasks = 10;
@@ -93,7 +93,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenPageSizeIsLessThanZero() {
+    void shouldThrowExceptionWhenPageSizeIsLessThanZero() {
         //arrange
         Integer page = 0;
         Integer numTasks = -1;
@@ -106,7 +106,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenPageSizeIsMoreThanMaximum() {
+    void shouldThrowExceptionWhenPageSizeIsMoreThanMaximum() {
         //arrange
         Integer page = 0;
         Integer numTasks = 101;
@@ -119,7 +119,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldAcceptLowerBoundPageSize() {
+    void shouldAcceptLowerBoundPageSize() {
         //arrange
         Integer page = 0;
         Integer numTasks = 1;
@@ -137,7 +137,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldAcceptUpperBoundPageSize() {
+    void shouldAcceptUpperBoundPageSize() {
         //arrange
         Integer page = 0;
         Integer numTasks = 100;
@@ -155,7 +155,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenSortIsNull(){
+    void shouldThrowExceptionWhenSortIsNull(){
         //arrange
         Integer page = 0;
         Integer numTasks = 10;
@@ -167,7 +167,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenSortIsEmpty(){
+    void shouldThrowExceptionWhenSortIsEmpty(){
         //arrange
         Integer page = 0;
         Integer numTasks = 10;
@@ -179,7 +179,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenSortNotInAllowedFields(){
+    void shouldThrowExceptionWhenSortNotInAllowedFields(){
         //arrange
         Integer page = 0;
         Integer numTasks = 10;
@@ -191,7 +191,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenSortIsInvalid(){
+    void shouldThrowExceptionWhenSortIsInvalid(){
         //arrange
         Integer page = 0;
         Integer numTasks = 10;
@@ -203,7 +203,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldSetSortToASCWhenSortDirectionIsNotSpecified(){
+    void shouldSetSortToASCWhenSortDirectionIsNotSpecified(){
         //arrange
         Integer page = 2;
         Integer numTasks = 10;
@@ -221,7 +221,7 @@ public class PaginationUtilsTest {
     }
 
     @Test
-    public void shouldSetSortWhenProvided(){
+    void shouldSetSortWhenProvided(){
         //arrange
         Integer page = 2;
         Integer numTasks = 10;

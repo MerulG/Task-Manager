@@ -41,13 +41,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private TaskResponse createTaskResponse(Task task){
-        return new TaskResponse(
-                task.getId(),
-                task.getTitle(),
-                task.getDescription(),
-                task.getPriority(),
-                task.getStatus()
-        );
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setId(task.getId());
+        taskResponse.setTitle(task.getTitle());
+        taskResponse.setDescription(task.getDescription());
+        taskResponse.setPriority(task.getPriority());
+        taskResponse.setStatus(task.getStatus());
+        return taskResponse;
     }
 
     public Task findTaskById(Integer id) {

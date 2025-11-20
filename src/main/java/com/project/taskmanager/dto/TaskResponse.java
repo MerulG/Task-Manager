@@ -2,11 +2,9 @@ package com.project.taskmanager.dto;
 
 import com.project.taskmanager.enums.Priority;
 import com.project.taskmanager.enums.Status;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class TaskResponse {
     private Integer id;
     private String title;

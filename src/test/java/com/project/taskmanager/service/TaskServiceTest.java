@@ -133,7 +133,7 @@ public class TaskServiceTest {
         task.setId(1);
         task.setTitle("test");
         when(taskRepository.findById(1)).thenReturn(Optional.of(task));
-        //get first argument passed to save method
+        //get the first argument passed to save method
         when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
         //act
         TaskResponse response = taskService.updateTask(1,request);

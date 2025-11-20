@@ -7,7 +7,6 @@ import com.project.taskmanager.exception.TaskNotFoundException;
 import com.project.taskmanager.model.Task;
 import com.project.taskmanager.model.User;
 import com.project.taskmanager.repository.TaskRepository;
-import com.project.taskmanager.repository.UserRepository;
 import com.project.taskmanager.service.TaskService;
 import com.project.taskmanager.utils.PaginationUtils;
 import com.project.taskmanager.utils.UserUtils;
@@ -23,12 +22,12 @@ import java.util.Optional;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
+    private final UserUtils userUtils;
     private static final List<String> ALLOWED_SORT_FIELDS = List.of("id", "title","description", "status", "priority");
 
-    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserUtils userUtils) {
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
+        this.userUtils = userUtils;
     }
 
     private Task createTaskFromRequest(TaskRequest taskRequest, User user){
@@ -80,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponse addTask(TaskRequest taskRequest, Integer userId) {
-        User user = UserUtils.findUserById(userRepository, userId);
+        User user = userUtils.findUserById(userId);
         Task task = createTaskFromRequest(taskRequest, user);
         task = taskRepository.save(task);
         return createTaskResponse(task);
@@ -101,7 +100,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional(readOnly = true)
     public Page<TaskResponse> getTasksByUserId(Integer page, Integer numTasks, String sort, Integer userId){
-        UserUtils.findUserById(userRepository, userId);
+        userUtils.findUserById(userId);
         Pageable pageable = PaginationUtils.validateAndCreatePageable(page, numTasks, sort, ALLOWED_SORT_FIELDS);
         return taskRepository.findByUserId(userId, pageable).map(this::createTaskResponse);
     }
@@ -114,7 +113,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Page<TaskResponse> getTasksByUserIdAndStatus(Integer page, Integer numTasks, String sort, Integer userId, Status status) {
-        UserUtils.findUserById(userRepository, userId);
+        userUtils.findUserById(userId);
         Pageable pageable = PaginationUtils.validateAndCreatePageable(page, numTasks, sort, ALLOWED_SORT_FIELDS);
         return taskRepository.findByUserIdAndStatus(userId, status, pageable).map(this::createTaskResponse);
     }

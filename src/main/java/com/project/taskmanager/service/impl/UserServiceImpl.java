@@ -18,11 +18,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserUtils userUtils;
     private static final List<String> ALLOWED_SORT_FIELDS = List.of("id", "username", "email");
 
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserUtils userUtils) {
         this.userRepository = userRepository;
+        this.userUtils = userUtils;
     }
 
     private User createUserFromRequest(UserRequest userRequest){
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserResponse getUser(Integer id) {
-        return createUserResponse(UserUtils.findUserById(userRepository, id));
+        return createUserResponse(userUtils.findUserById(id));
     }
 
     @Override
@@ -69,13 +71,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Integer id) {
-        User user = UserUtils.findUserById(userRepository, id);
+        User user = userUtils.findUserById(id);
         userRepository.delete(user);
     }
 
     @Override
     public UserResponse updateUser(UserRequest userRequest, Integer id) {
-        User existingUser = UserUtils.findUserById(userRepository, id);
+        User existingUser = userUtils.findUserById(id);
 
         if (!existingUser.getEmail().equals(userRequest.getEmail())
                 && userRepository.existsByEmail(userRequest.getEmail())) {

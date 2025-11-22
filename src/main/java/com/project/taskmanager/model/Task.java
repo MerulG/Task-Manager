@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
 @Entity
 @Table(name = "tasks")
 public class Task {

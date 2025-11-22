@@ -91,7 +91,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void addTaskWhenJsonIsValid() throws Exception {
+    void shouldAddTaskWhenJsonIsValid() throws Exception {
         //arrange
         String validJson = """
         {
@@ -119,7 +119,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithNoTitle() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithNoTitle() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -141,7 +141,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithTitleTooLong() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithTitleTooLong() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -164,7 +164,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithNoDescription() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithNoDescription() throws Exception{
         //arrange
         String inValidJson = """
         {
@@ -187,7 +187,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithDescriptionTooLong() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithDescriptionTooLong() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -210,7 +210,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithNoPriority() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithNoPriority() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -231,7 +231,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithInvalidPriority() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithInvalidPriority() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -253,7 +253,7 @@ class TaskControllerTest {
     }
     
     @Test
-    void throwExceptionWhenAddingTaskWithNoStatus() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithNoStatus() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -274,7 +274,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenAddingTaskWithInvalidStatus() throws Exception{
+    void shouldThrowExceptionWhenAddingTaskWithInvalidStatus() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -296,7 +296,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void updateTaskWhenJsonIsValid() throws Exception {
+    void shouldUpdateTaskWhenJsonIsValid() throws Exception {
         //arrange
         String validJson = """
         {
@@ -324,7 +324,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithNoTitle() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithNoTitle() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -346,7 +346,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithTitleTooLong() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithTitleTooLong() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -369,7 +369,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithNoDescription() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithNoDescription() throws Exception{
         //arrange
         String inValidJson = """
         {
@@ -392,7 +392,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithDescriptionTooLong() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithDescriptionTooLong() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -415,7 +415,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithNoPriority() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithNoPriority() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -436,7 +436,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithInvalidPriority() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithInvalidPriority() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -458,7 +458,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithNoStatus() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithNoStatus() throws Exception{
         //arrange
         String invalidJson = """
         {
@@ -479,7 +479,7 @@ class TaskControllerTest {
     }
 
     @Test
-    void throwExceptionWhenUpdatingTaskWithInvalidStatus() throws Exception{
+    void shouldThrowExceptionWhenUpdatingTaskWithInvalidStatus() throws Exception{
         //arrange
         String invalidJson = """
         {

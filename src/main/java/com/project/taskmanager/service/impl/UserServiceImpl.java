@@ -36,11 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserResponse createUserResponse(User user){
-        return new UserResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail()
-        );
+        UserResponse response = new UserResponse();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        return response;
     }
 
     @Override

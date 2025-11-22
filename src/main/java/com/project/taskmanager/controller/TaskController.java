@@ -23,7 +23,7 @@ public class TaskController{
         return taskService.getTask(id);
     }
 
-    @GetMapping
+    @GetMapping()
     public Page<TaskResponse> getTasks(@RequestParam(defaultValue = "0") Integer page,
                                        @RequestParam(defaultValue = "10") Integer numTasks,
                                        @RequestParam(defaultValue = "id,asc") String sort){
@@ -36,7 +36,7 @@ public class TaskController{
         taskService.deleteTaskById(id);
     }
 
-    @PostMapping("user/{userId}")
+    @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse addTask(@PathVariable Integer userId, @RequestBody @Valid TaskRequest taskRequest) {
         return taskService.addTask(taskRequest, userId);
@@ -44,7 +44,7 @@ public class TaskController{
 
     @PutMapping("/{id}")
     public TaskResponse updateTask(@PathVariable Integer id, @RequestBody @Valid TaskRequest taskRequest) {
-        return taskService.updateTask(id, taskRequest);
+        return taskService.updateTask(taskRequest,id);
     }
 
     @GetMapping("/user/{userId}")

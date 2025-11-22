@@ -136,7 +136,7 @@ class TaskServiceTest {
         //get the first argument passed to save method
         when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> invocation.getArgument(0));
         //act
-        TaskResponse response = taskService.updateTask(1,request);
+        TaskResponse response = taskService.updateTask(request,1);
         //assert
         assertEquals(1, response.getId(),"Task ID should match the requested ID");
         assertEquals("test2", response.getTitle(),"Task title should match the expected title");

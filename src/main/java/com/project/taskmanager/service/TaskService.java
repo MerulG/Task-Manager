@@ -10,7 +10,7 @@ public interface TaskService {
     Page<TaskResponse> getTasks(Integer page, Integer numTasks, String sort);
     void deleteTaskById(Integer id);
     TaskResponse addTask(TaskRequest taskRequest, Integer userId);
-    TaskResponse updateTask(Integer id, TaskRequest taskRequest);
+    TaskResponse updateTask(TaskRequest taskRequest, Integer userId);
     Page<TaskResponse> getTasksByUserId(Integer page, Integer numTasks, String sort, Integer userId);
     Page<TaskResponse> getTasksByStatus(Integer page, Integer numTasks, String sort, Status status);
     Page<TaskResponse> getTasksByUserIdAndStatus(Integer page, Integer numTasks, String sort, Integer userId, Status status);

@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("/{id}")
     public UserResponse getUser(@PathVariable Integer id) {
         return userService.getUser(id);
     }

@@ -44,7 +44,7 @@ public class UserControllerTest {
         when(userService.getUser(1)).thenReturn(expectedResponse);
         //act
         //assert
-        mockMvc.perform(get("/api/users/id/{id}",1))
+        mockMvc.perform(get("/api/users/{id}",1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("SampleUser1"))

@@ -9,6 +9,7 @@ services:
       POSTGRES_USER: merul
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: TaskManagerDB
+      PGDATABASE: TaskManagerDB
     ports:
       - "5432:5432"
     volumes:

@@ -63,3 +63,8 @@ A production-ready **Task Manager REST API** built with **Spring Boot**, featuri
 ### **Documentation**
 - Swagger / springdoc-openapi 
 - https://task-manager-wc0c.onrender.com/swagger-ui/index.html
+
+### Postman Collection
+A full Postman collection is included for testing all endpoints:
+- /postman/tasks.json
+- /postman/users.json

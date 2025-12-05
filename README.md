@@ -41,9 +41,7 @@ A production-ready **Task Manager REST API** built with **Spring Boot**, featuri
 - Java 17  
 - Spring Boot  
 - Spring Web  
-- Spring Data JPA  
-- Hibernate ORM  
-- Jakarta Validation (Bean Validation)  
+- Spring Data JPA 
 
 ### **Database**
 - PostgreSQL  

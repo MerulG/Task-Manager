@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 public class TaskRequest {
-    @Schema(description = "The title of the task", example = "Complete project documentation")
+    @Schema(description = "The title of the task", example = "Complete Docs")
     @NotBlank(message = "Title is required")
     @Size(max = 20, message = "Title must be at most 20 characters")
     private String title;

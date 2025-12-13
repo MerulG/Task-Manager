@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Curl app health endpoint
+      - name: Curl app endpoint
         run: |
           echo "Pinging app..."
           curl -L --silent --show-error --fail \

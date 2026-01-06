@@ -29,9 +29,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/TaskManagerDB
       SPRING_DATASOURCE_USERNAME: merul
       SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_PROFILES_ACTIVE: dev
     depends_on:
       db:
         condition: service_healthy
-
 volumes:
   dbdata:

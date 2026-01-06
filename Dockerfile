@@ -16,8 +16,17 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
+# Install Postgres client for pg_isready
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+
+# Copy the packaged JAR
 COPY --from=build /app/target/*.jar app.jar
+
+# Copy wait-for script
+COPY wait-for-postgres.sh .
+RUN chmod +x wait-for-postgres.sh
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Use the wait-for script as entrypoint
+ENTRYPOINT ["./wait-for-postgres.sh", "db", "java", "-jar", "app.jar"]

@@ -79,7 +79,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         //act
-        UserResponse response = userService.addUser(request);
+        UserResponse response = userService.register(request);
         //assert
         assertEquals(1, response.getId(),"User ID should match the requested ID");
         assertEquals("test", response.getUsername(),"User username should match the expected username");
@@ -95,7 +95,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
         //act
         //assert
-        assertThrows(IllegalArgumentException.class, () -> userService.addUser(request));
+        assertThrows(IllegalArgumentException.class, () -> userService.register(request));
         verify(userRepository,times(1)).existsByEmail(request.getEmail());
     }
 
@@ -111,7 +111,7 @@ class UserServiceTest {
 
         //act
         //assert
-        assertThrows(IllegalArgumentException.class, () -> userService.addUser(request));
+        assertThrows(IllegalArgumentException.class, () -> userService.register(request));
         verify(userRepository,times(1)).existsByUsername(request.getUsername());
     }
 

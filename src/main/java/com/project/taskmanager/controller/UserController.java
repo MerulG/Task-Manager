@@ -54,17 +54,6 @@ public class UserController {
     }
 
     @Operation(
-            summary = "Create a new user",
-            description = "Creates a new user with username and email."
-    )
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse createUser(
-            @Parameter(description = "User data containing username and email") @RequestBody @Valid UserRequest userRequest){
-        return userService.addUser(userRequest);
-    }
-
-    @Operation(
             summary = "Update a user",
             description = "Updates an existing user with new information."
     )

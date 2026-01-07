@@ -1,10 +1,10 @@
 -- Users (idempotent via unique constraints)
-INSERT INTO users (username, password, email)
-VALUES ('alice', 'password123', 'alice@example.com')
+INSERT INTO users (username, password, email, role)
+VALUES ('alice', 'password123', 'alice@example.com', 'USER')
 ON CONFLICT (username) DO NOTHING;
 
 INSERT INTO users (username, password, email)
-VALUES ('bob', 'password123', 'bob@example.com')
+VALUES ('bob', 'password123', 'bob@example.com', 'USER')
 ON CONFLICT (username) DO NOTHING;
 
 -- Tasks for Alice (no unique constraint, so we guard with NOT EXISTS)

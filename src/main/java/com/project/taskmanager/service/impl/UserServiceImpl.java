@@ -1,7 +1,9 @@
 package com.project.taskmanager.service.impl;
 
+import com.project.taskmanager.dto.RegisterRequest;
 import com.project.taskmanager.dto.UserRequest;
 import com.project.taskmanager.dto.UserResponse;
+import com.project.taskmanager.enums.Role;
 import com.project.taskmanager.model.User;
 import com.project.taskmanager.repository.UserRepository;
 import com.project.taskmanager.service.UserService;
@@ -9,6 +11,7 @@ import com.project.taskmanager.utils.PaginationUtils;
 import com.project.taskmanager.utils.UserUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,18 +23,22 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserUtils userUtils;
     private static final List<String> ALLOWED_SORT_FIELDS = List.of("id", "username", "email");
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserRepository userRepository, UserUtils userUtils) {
+    public UserServiceImpl(UserRepository userRepository, UserUtils userUtils, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userUtils = userUtils;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    private User createUserFromRequest(UserRequest userRequest){
+    private User registerUserFromRequest(RegisterRequest registerRequest){
         User user = new User();
-        user.setUsername(userRequest.getUsername());
-        user.setPassword(userRequest.getPassword());
-        user.setEmail(userRequest.getEmail());
+        user.setUsername(registerRequest.getUsername());
+        String hashedPassword = passwordEncoder.encode(registerRequest.getPassword());
+        user.setPassword(hashedPassword);
+        user.setEmail(registerRequest.getEmail());
+        user.setRole(Role.USER);
         return user;
     }
 
@@ -57,15 +64,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse addUser(UserRequest userRequest) {
-        if (userRepository.existsByEmail(userRequest.getEmail())) {
+    public UserResponse register(RegisterRequest registerRequest) {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        if (userRepository.existsByUsername(userRequest.getUsername())) {
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
-        User user = userRepository.save(createUserFromRequest(userRequest));
+        User user = userRepository.save(registerUserFromRequest(registerRequest));
         return createUserResponse(user);
     }
 
@@ -79,19 +86,31 @@ public class UserServiceImpl implements UserService {
     public UserResponse updateUser(UserRequest userRequest, Integer id) {
         User existingUser = userUtils.findUserById(id);
 
-        if (!existingUser.getEmail().equals(userRequest.getEmail())
-                && userRepository.existsByEmail(userRequest.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+        if (userRequest.getEmail() != null && !userRequest.getEmail().isBlank()) {
+            if (!existingUser.getEmail().equals(userRequest.getEmail())
+                    && userRepository.existsByEmail(userRequest.getEmail())) {
+                throw new IllegalArgumentException("Email already exists");
+            }
+            existingUser.setEmail(userRequest.getEmail());
         }
 
-        if (!existingUser.getUsername().equals(userRequest.getUsername())
-                && userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new IllegalArgumentException("Username already exists");
+        if (userRequest.getUsername() != null && !userRequest.getUsername().isBlank()) {
+            if (!existingUser.getUsername().equals(userRequest.getUsername())
+                    && userRepository.existsByUsername(userRequest.getUsername())) {
+                throw new IllegalArgumentException("Username already exists");
+            }
+            existingUser.setUsername(userRequest.getUsername());
         }
 
-        existingUser.setUsername(userRequest.getUsername());
-        existingUser.setEmail(userRequest.getEmail());
-        existingUser.setPassword(userRequest.getPassword());
+        if (userRequest.getPassword() != null && !userRequest.getPassword().isBlank()) {
+            String hashedPassword = passwordEncoder.encode(userRequest.getPassword());
+            existingUser.setPassword(hashedPassword);
+        }
+
+        if (userRequest.getRole() != null) {
+            existingUser.setRole(userRequest.getRole());
+        }
+
         existingUser = userRepository.save(existingUser);
         return createUserResponse(existingUser);
     }

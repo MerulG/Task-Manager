@@ -1,5 +1,6 @@
 package com.project.taskmanager.service;
 
+import com.project.taskmanager.dto.RegisterRequest;
 import com.project.taskmanager.dto.UserRequest;
 import com.project.taskmanager.dto.UserResponse;
 import com.project.taskmanager.model.User;
@@ -68,7 +69,7 @@ class UserServiceTest {
     @Test
     void shouldCreateNewUser(){
         //arrange
-        UserRequest request= new UserRequest();
+        RegisterRequest request= new RegisterRequest();
         request.setUsername("test");
         request.setEmail("test@email.com");
         User user = new User();
@@ -89,7 +90,7 @@ class UserServiceTest {
     @Test
     void shouldThrowExceptionWhenAddingUserAndEmailExists(){
         //arrange
-        UserRequest request= new UserRequest();
+        RegisterRequest request= new RegisterRequest();
         request.setEmail("test@email.com");
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
         when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
@@ -102,7 +103,7 @@ class UserServiceTest {
     @Test
     void shouldThrowExceptionWhenAddingUserAndUsernameExists(){
         //arrange
-        UserRequest request= new UserRequest();
+        RegisterRequest request= new RegisterRequest();
         request.setUsername("test");
         request.setEmail("test@email.com");
         when(userRepository.existsByEmail(anyString())).thenReturn(false); //service checks email first

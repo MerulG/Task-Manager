@@ -3,7 +3,7 @@ INSERT INTO users (username, password, email, role)
 VALUES ('alice', 'password123', 'alice@example.com', 'USER')
 ON CONFLICT (username) DO NOTHING;
 
-INSERT INTO users (username, password, email)
+INSERT INTO users (username, password, email, role)
 VALUES ('bob', 'password123', 'bob@example.com', 'USER')
 ON CONFLICT (username) DO NOTHING;
 

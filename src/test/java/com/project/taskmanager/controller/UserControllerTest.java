@@ -1,5 +1,6 @@
 package com.project.taskmanager.controller;
 
+import com.project.taskmanager.dto.RegisterRequest;
 import com.project.taskmanager.dto.UserRequest;
 import com.project.taskmanager.dto.UserResponse;
 import com.project.taskmanager.service.UserService;
@@ -91,7 +92,7 @@ public class UserControllerTest {
         }
         """;
         UserResponse expectedResponse = createUserResponse(1);
-        when(userService.register(any(UserRequest.class))).thenReturn(expectedResponse);
+        when(userService.register(any(RegisterRequest.class))).thenReturn(expectedResponse);
         //act
         //assert
         mockMvc.perform(post("/api/users")
@@ -101,7 +102,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("SampleUser1"))
                 .andExpect(jsonPath("$.email").value("sample@email1.com"));
-        verify(userService,times(1)).register(any(UserRequest.class));
+        verify(userService,times(1)).register(any(RegisterRequest.class));
     }
 
     @Test
@@ -122,7 +123,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.messages[0]").value("username: Username is required"));
-        verify(userService,times(0)).register(any(UserRequest.class));
+        verify(userService,times(0)).register(any(RegisterRequest.class));
 
     }
 
@@ -144,7 +145,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.messages[0]").value("email: Email is required"));
-        verify(userService,times(0)).register(any(UserRequest.class));
+        verify(userService,times(0)).register(any(RegisterRequest.class));
 
 
     }
@@ -167,7 +168,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.messages[0]").value("email: Email is not valid"));
-        verify(userService,times(0)).register(any(UserRequest.class));
+        verify(userService,times(0)).register(any(RegisterRequest.class));
 
     }
 
@@ -189,7 +190,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.messages[0]").value("password: Password is required"));
-        verify(userService,times(0)).register(any(UserRequest.class));
+        verify(userService,times(0)).register(any(RegisterRequest.class));
 
 
     }

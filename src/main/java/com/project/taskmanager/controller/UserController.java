@@ -5,6 +5,7 @@ import com.project.taskmanager.dto.UserResponse;
 import com.project.taskmanager.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,8 @@ public class UserController {
 
     @Operation(
             summary = "Get a user by ID",
-            description = "Retrieves a single user by their unique identifier."
+            description = "Retrieves a single user by their unique identifier.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
     @GetMapping("/{id}")
@@ -34,7 +36,8 @@ public class UserController {
 
     @Operation(
             summary = "Get all users",
-            description = "Retrieves a paginated list of all users with sorting options."
+            description = "Retrieves a paginated list of all users with sorting options.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
@@ -47,7 +50,8 @@ public class UserController {
 
     @Operation(
             summary = "Delete a user",
-            description = "Deletes a user by their unique identifier."
+            description = "Deletes a user by their unique identifier.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
@@ -59,7 +63,8 @@ public class UserController {
 
     @Operation(
             summary = "Update a user",
-            description = "Updates an existing user with new information."
+            description = "Updates an existing user with new information.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
     @PutMapping("/{id}")

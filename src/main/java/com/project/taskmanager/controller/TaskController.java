@@ -6,6 +6,7 @@ import com.project.taskmanager.enums.Status;
 import com.project.taskmanager.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,8 @@ public class TaskController{
 
     @Operation(
             summary = "Get a task by ID",
-            description = "Retrieves a single task by its unique identifier."
+            description = "Retrieves a single task by its unique identifier.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
     @GetMapping("{id}")
@@ -34,7 +36,8 @@ public class TaskController{
 
     @Operation(
             summary = "Get all tasks",
-            description = "Retrieves a paginated list of all tasks with sorting options."
+            description = "Retrieves a paginated list of all tasks with sorting options.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
@@ -47,7 +50,8 @@ public class TaskController{
 
     @Operation(
             summary = "Delete a task",
-            description = "Deletes a task by its unique identifier."
+            description = "Deletes a task by its unique identifier.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
@@ -59,7 +63,8 @@ public class TaskController{
 
     @Operation(
             summary = "Create a new task",
-            description = "Creates a new task and assigns it to a specific user."
+            description = "Creates a new task and assigns it to a specific user.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     @PostMapping("/user/{userId}")
@@ -72,7 +77,8 @@ public class TaskController{
 
     @Operation(
             summary = "Update a task",
-            description = "Updates an existing task with new information."
+            description = "Updates an existing task with new information.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
     @PutMapping("/{id}")
@@ -84,7 +90,8 @@ public class TaskController{
 
     @Operation(
             summary = "Get tasks by user ID",
-            description = "Retrieves a paginated list of tasks assigned to a specific user."
+            description = "Retrieves a paginated list of tasks assigned to a specific user.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     @GetMapping("/user/{userId}")
@@ -98,7 +105,8 @@ public class TaskController{
 
     @Operation(
             summary = "Get tasks by status",
-            description = "Retrieves a paginated list of tasks filtered by their status."
+            description = "Retrieves a paginated list of tasks filtered by their status.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/status/{status}")
@@ -112,7 +120,8 @@ public class TaskController{
 
     @Operation(
             summary = "Get tasks by user ID and status",
-            description = "Retrieves a paginated list of tasks for a specific user filtered by status."
+            description = "Retrieves a paginated list of tasks for a specific user filtered by status.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     @GetMapping("/user/{userId}/status/{status}")
@@ -127,7 +136,8 @@ public class TaskController{
 
     @Operation(
             summary = "Search tasks by title",
-            description = "Retrieves a paginated list of tasks that match the specified title search term."
+            description = "Retrieves a paginated list of tasks that match the specified title search term.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search")

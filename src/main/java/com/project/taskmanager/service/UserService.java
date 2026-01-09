@@ -11,5 +11,6 @@ public interface UserService {
     UserResponse register(RegisterRequest registerRequest);
     void deleteUserById(Integer id);
     UserResponse updateUser(UserRequest userRequest, Integer id);
+    boolean isUser(Integer userId, String username);
 
 }

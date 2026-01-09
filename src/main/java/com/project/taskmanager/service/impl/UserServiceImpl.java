@@ -114,4 +114,10 @@ public class UserServiceImpl implements UserService {
         existingUser = userRepository.save(existingUser);
         return createUserResponse(existingUser);
     }
+
+    @Override
+    public boolean isUser(Integer userId, String username) {
+        User user = userUtils.findUserById(userId);
+        return user.getUsername().equals(username);
+    }
 }

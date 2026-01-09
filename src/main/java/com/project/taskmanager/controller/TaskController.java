@@ -27,7 +27,7 @@ public class TaskController{
             description = "Retrieves a single task by its unique identifier.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
+    @PreAuthorize("@taskServiceImpl.isTaskOwner(#id, principal.username) or hasRole('ADMIN')")
     @GetMapping("{id}")
     public TaskResponse getTask(
             @Parameter(description = "The unique identifier of the task") @PathVariable Integer id) {
@@ -53,7 +53,7 @@ public class TaskController{
             description = "Deletes a task by its unique identifier.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
+    @PreAuthorize("@taskServiceImpl.isTaskOwner(#id, principal.username) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(
@@ -66,7 +66,7 @@ public class TaskController{
             description = "Creates a new task and assigns it to a specific user.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
+    @PreAuthorize("@userServiceImpl.isUser(#userId, principal.username) or hasRole('ADMIN')")
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse addTask(
@@ -80,7 +80,7 @@ public class TaskController{
             description = "Updates an existing task with new information.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
+    @PreAuthorize("@taskServiceImpl.isTaskOwner(#id, principal.username) or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public TaskResponse updateTask(
             @Parameter(description = "The unique identifier of the task to update") @PathVariable Integer id,
@@ -93,7 +93,7 @@ public class TaskController{
             description = "Retrieves a paginated list of tasks assigned to a specific user.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
+    @PreAuthorize("@userServiceImpl.isUser(#userId, principal.username) or hasRole('ADMIN')")
     @GetMapping("/user/{userId}")
     public Page<TaskResponse> getTasksByUserId(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,
@@ -123,7 +123,7 @@ public class TaskController{
             description = "Retrieves a paginated list of tasks for a specific user filtered by status.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
+    @PreAuthorize("@userServiceImpl.isUser(#userId, principal.username) or hasRole('ADMIN')")
     @GetMapping("/user/{userId}/status/{status}")
     public Page<TaskResponse> getTasksByUserIdAndStatus(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,

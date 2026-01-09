@@ -125,9 +125,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public boolean isTaskOwner(Integer taskId, Integer userId) {
-        Task task = findTaskById(taskId);
-        return task.getUser().getId().equals(userId);
+    public boolean isTaskOwner(Integer taskId, String username) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task with id " + taskId + " not found"));
+        return task.getUser().getUsername().equals(username);
     }
 
 }

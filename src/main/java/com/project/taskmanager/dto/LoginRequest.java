@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class LoginRequest {
-    @Schema(description = "The username of the user", example = "johndoe")
+    @Schema(description = "The username of the user", example = "alice")
     @NotBlank(message = "Username is required")
     private String username;
-    @Schema(description = "The password for the user account", example = "SecureP@ssw0rd")
+    @Schema(description = "The password for the user account", example = "password123")
     @NotBlank(message = "Password is required")
     private String password;
 }

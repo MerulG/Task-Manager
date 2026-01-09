@@ -1,5 +1,6 @@
 package com.project.taskmanager.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -12,22 +13,16 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI apiInfo() {
-        final String securitySchemeName = "bearerAuth";
-
         return new OpenAPI()
                 .info(new Info()
                         .title("Task Manager API")
                         .description("REST API for managing tasks")
                         .version("1.0.0"))
-                // add JWT security requirement globally
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes(securitySchemeName,
-                                new SecurityScheme()
-                                        .name(securitySchemeName)
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")
-                        ));
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 }

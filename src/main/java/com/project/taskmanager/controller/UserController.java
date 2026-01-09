@@ -27,7 +27,7 @@ public class UserController {
             description = "Retrieves a single user by their unique identifier.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
+    @PreAuthorize("@userServiceImpl.isUser(#id, principal.username) or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public UserResponse getUser(
             @Parameter(description = "The unique identifier of the user") @PathVariable Integer id) {
@@ -66,7 +66,7 @@ public class UserController {
             description = "Updates an existing user with new information.",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-    @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
+    @PreAuthorize("@userServiceImpl.isUser(#id, principal.username) or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public UserResponse updateUser(
             @Parameter(description = "The unique identifier of the user to update") @PathVariable Integer id,

@@ -1,9 +1,9 @@
--- Users (passwords hashed using bcrypt via crypt())
+-- Users
 INSERT INTO users (username, password, email, role)
 VALUES
-('alice', crypt('password123', gen_salt('bf')), 'alice@example.com', 'USER'),
-('bob', crypt('password123', gen_salt('bf')), 'bob@example.com', 'USER'),
-('admin', crypt('admin123', gen_salt('bf')), 'admin@example.com', 'ADMIN')
+    ('alice', '$2a$10$LQefO24.It256XBAjZlNBeA.iY/BhZ31u1MsCEBYfccNJsxf9FcAe', 'alice@example.com', 'USER'),
+    ('bob', '$2a$10$3qmPLdo24.vg2bGgPlUUsuyADJ11XeHBzG6CGHspSTpYImxhQCgHa', 'bob@example.com', 'USER'),
+    ('admin', '$2a$10$QkcHDAFZUkuGhJvILtgXd.60FGtJnvbVye3o7ZnEie1ksrNVX2Dpy', 'admin@example.com', 'ADMIN')
 ON CONFLICT (username) DO NOTHING;
 
 -- Tasks for Alice

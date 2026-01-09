@@ -124,4 +124,10 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findByTitleContainingIgnoreCase(title, pageable).map(this::createTaskResponse);
     }
 
+    @Override
+    public boolean isTaskOwner(Integer taskId, Integer userId) {
+        Task task = findTaskById(taskId);
+        return task.getUser().getId().equals(userId);
+    }
+
 }

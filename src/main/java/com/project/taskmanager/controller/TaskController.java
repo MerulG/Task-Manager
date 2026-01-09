@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +25,7 @@ public class TaskController{
             summary = "Get a task by ID",
             description = "Retrieves a single task by its unique identifier."
     )
+    @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
     @GetMapping("{id}")
     public TaskResponse getTask(
             @Parameter(description = "The unique identifier of the task") @PathVariable Integer id) {
@@ -34,6 +36,7 @@ public class TaskController{
             summary = "Get all tasks",
             description = "Retrieves a paginated list of all tasks with sorting options."
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public Page<TaskResponse> getTasks(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,
@@ -46,6 +49,7 @@ public class TaskController{
             summary = "Delete a task",
             description = "Deletes a task by its unique identifier."
     )
+    @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(
@@ -57,6 +61,7 @@ public class TaskController{
             summary = "Create a new task",
             description = "Creates a new task and assigns it to a specific user."
     )
+    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     @PostMapping("/user/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskResponse addTask(
@@ -69,6 +74,7 @@ public class TaskController{
             summary = "Update a task",
             description = "Updates an existing task with new information."
     )
+    @PreAuthorize("@taskService.isTaskOwner(#id, principal.id) or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public TaskResponse updateTask(
             @Parameter(description = "The unique identifier of the task to update") @PathVariable Integer id,
@@ -80,6 +86,7 @@ public class TaskController{
             summary = "Get tasks by user ID",
             description = "Retrieves a paginated list of tasks assigned to a specific user."
     )
+    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     @GetMapping("/user/{userId}")
     public Page<TaskResponse> getTasksByUserId(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,
@@ -93,6 +100,7 @@ public class TaskController{
             summary = "Get tasks by status",
             description = "Retrieves a paginated list of tasks filtered by their status."
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/status/{status}")
     public Page<TaskResponse> getTasksByStatus(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,
@@ -106,6 +114,7 @@ public class TaskController{
             summary = "Get tasks by user ID and status",
             description = "Retrieves a paginated list of tasks for a specific user filtered by status."
     )
+    @PreAuthorize("#userId == principal.id or hasRole('ADMIN')")
     @GetMapping("/user/{userId}/status/{status}")
     public Page<TaskResponse> getTasksByUserIdAndStatus(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,
@@ -120,6 +129,7 @@ public class TaskController{
             summary = "Search tasks by title",
             description = "Retrieves a paginated list of tasks that match the specified title search term."
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search")
     public Page<TaskResponse> getTasksByTitle(
             @Parameter(description = "Page number (zero-indexed)") @RequestParam(defaultValue = "0") Integer page,

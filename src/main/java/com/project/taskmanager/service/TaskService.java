@@ -15,4 +15,5 @@ public interface TaskService {
     Page<TaskResponse> getTasksByStatus(Integer page, Integer numTasks, String sort, Status status);
     Page<TaskResponse> getTasksByUserIdAndStatus(Integer page, Integer numTasks, String sort, Integer userId, Status status);
     Page<TaskResponse> getTasksByTitle(Integer page, Integer numTasks, String sort, String title);
+    boolean isTaskOwner(Integer taskId, Integer userId);
 }

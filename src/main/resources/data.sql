@@ -1,13 +1,12 @@
--- Users (idempotent via unique constraints)
+-- Users (passwords hashed using bcrypt via crypt())
 INSERT INTO users (username, password, email, role)
-VALUES ('alice', 'password123', 'alice@example.com', 'USER')
+VALUES
+('alice', crypt('password123', gen_salt('bf')), 'alice@example.com', 'USER'),
+('bob', crypt('password123', gen_salt('bf')), 'bob@example.com', 'USER'),
+('admin', crypt('admin123', gen_salt('bf')), 'admin@example.com', 'ADMIN')
 ON CONFLICT (username) DO NOTHING;
 
-INSERT INTO users (username, password, email, role)
-VALUES ('bob', 'password123', 'bob@example.com', 'USER')
-ON CONFLICT (username) DO NOTHING;
-
--- Tasks for Alice (no unique constraint, so we guard with NOT EXISTS)
+-- Tasks for Alice
 INSERT INTO tasks (title, description, priority, status, user_id)
 SELECT
   'Finish report',

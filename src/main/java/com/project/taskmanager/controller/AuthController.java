@@ -3,7 +3,6 @@ package com.project.taskmanager.controller;
 import com.project.taskmanager.dto.*;
 import com.project.taskmanager.security.JwtProvider;
 import com.project.taskmanager.service.UserService;
-import com.project.taskmanager.service.impl.ApiUserDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;

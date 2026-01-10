@@ -91,8 +91,7 @@ A production-ready **Task Manager REST API** built with **Spring Boot**, featuri
 6. Click the **Authorize** button (top-right in Swagger UI) → **Bearer Token**, and paste the copied token.
 7. Now all endpoints will use your JWT, and only those allowed for your role will succeed.
 
-> ⚠️ Note: Users will only be able to access their own tasks unless they are an Admin
-> ⚠️ Note: Use the admin account to find the IDs of other users and tasks
+> ⚠️ Note: Users will only be able to access their own tasks unless they are an Admin, use the admin account to find the IDs of other users and tasks
 
 
 ---

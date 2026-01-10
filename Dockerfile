@@ -22,11 +22,7 @@ RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/ap
 # Copy the packaged JAR
 COPY --from=build /app/target/*.jar app.jar
 
-# Copy wait-for script
-COPY wait-for-postgres.sh .
-RUN chmod +x wait-for-postgres.sh
-
 EXPOSE 8080
 
 # Use the wait-for script as entrypoint
-ENTRYPOINT ["./wait-for-postgres.sh", "db", "java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

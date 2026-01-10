@@ -1,12 +1,17 @@
 package com.project.taskmanager.exception;
 
 import com.project.taskmanager.controller.TaskController;
+import com.project.taskmanager.security.JwtProvider;
 import com.project.taskmanager.service.TaskService;
+import com.project.taskmanager.service.impl.ApiUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.access.AccessDeniedException;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -16,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(controllers = TaskController.class)
+@WithMockUser(username = "admin", roles = "ADMIN")
 public class GlobalExceptionHandlerTest {
 
     @Autowired
@@ -23,6 +29,15 @@ public class GlobalExceptionHandlerTest {
 
     @MockBean
     TaskService taskService;
+
+    @MockBean
+    JwtProvider jwtProvider;
+
+    @MockBean
+    UserDetailsService userDetailsService;
+
+    @MockBean
+    ApiUserDetailsService apiUserDetailsService;
 
     @Test
     void shouldReturn404WhenTaskNotFound() throws Exception{
@@ -61,6 +76,19 @@ public class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.status").value(400))
                 .andExpect(jsonPath("$.messages[0]").value("Invalid value for request parameter"))
                 .andExpect(jsonPath("$.path").value("/api/tasks/-1"));
+    }
+
+    @Test
+    void shouldReturnAccessDeniedExceptionWhenUsingProtectedEndpoints() throws Exception{
+        //arrange
+        when(taskService.getTask(1)).thenThrow(new AccessDeniedException("Access denied."));
+        //act
+        //assert
+        mockMvc.perform(get("/api/tasks/{id}", 1))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value(403))
+                .andExpect(jsonPath("$.messages[0]").value("Access denied."))
+                .andExpect(jsonPath("$.path").value("/api/tasks/1"));
     }
 
     @Test

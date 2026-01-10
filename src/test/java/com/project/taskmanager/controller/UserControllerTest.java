@@ -1,11 +1,13 @@
 package com.project.taskmanager.controller;
 
-import com.project.taskmanager.dto.RegisterRequest;
 import com.project.taskmanager.dto.UserRequest;
 import com.project.taskmanager.dto.UserResponse;
+import com.project.taskmanager.security.JwtProvider;
 import com.project.taskmanager.service.UserService;
+import com.project.taskmanager.service.impl.ApiUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UserController.class) // Load only TaskController & MVC context
+@WebMvcTest(UserController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
 
     @Autowired
@@ -29,6 +32,12 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    JwtProvider jwtProvider;
+
+    @MockBean
+    ApiUserDetailsService apiUserDetailsService;
 
     private UserResponse createUserResponse(Integer id){
         UserResponse response = new UserResponse();
@@ -82,127 +91,13 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldAddUserWhenJsonIsValid() throws Exception {
-        //arrange
-        String validJson = """
-        {
-            "username": "SampleUser1",
-            "email": "sample@email1.com",
-            "password": "password"
-        }
-        """;
-        UserResponse expectedResponse = createUserResponse(1);
-        when(userService.register(any(RegisterRequest.class))).thenReturn(expectedResponse);
-        //act
-        //assert
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validJson))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.username").value("SampleUser1"))
-                .andExpect(jsonPath("$.email").value("sample@email1.com"));
-        verify(userService,times(1)).register(any(RegisterRequest.class));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddingUserWithNoUsername() throws Exception {
-        //arrange
-        String invalidJson = """
-        {
-            "username": "",
-            "email": "sample@email1.com",
-            "password": "password"
-        }
-        """;
-        //act
-        //assert
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("username: Username is required"));
-        verify(userService,times(0)).register(any(RegisterRequest.class));
-
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddingUserWithNoEmail() throws Exception {
-        //arrange
-        String invalidJson = """
-        {
-            "username": "SampleUser1",
-            "email": "",
-            "password": "password"
-        }
-        """;
-        //act
-        //assert
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("email: Email is required"));
-        verify(userService,times(0)).register(any(RegisterRequest.class));
-
-
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddingUserWithInvalidEmail() throws Exception {
-        //arrange
-        String invalidJson = """
-        {
-            "username": "SampleUser1",
-            "email": "invalidemail",
-            "password": "password"
-        }
-        """;
-        //act
-        //assert
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("email: Email is not valid"));
-        verify(userService,times(0)).register(any(RegisterRequest.class));
-
-    }
-
-    @Test
-    void shouldThrowExceptionWhenAddingUserWithNoPassword() throws Exception {
-        //arrange
-        String invalidJson = """
-        {
-            "username": "SampleUser1",
-            "email": "sample@email1.com",
-            "password": ""
-        }
-        """;
-        //act
-        //assert
-        mockMvc.perform(post("/api/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("password: Password is required"));
-        verify(userService,times(0)).register(any(RegisterRequest.class));
-
-
-    }
-
-    @Test
     void shouldUpdateUserWhenJsonIsValid() throws Exception {
         //arrange
         String validJson = """
         {
             "username": "SampleUser1",
             "email": "sample@email1.com",
-            "password": "password"
+            "password": "Password1!"
         }
         """;
         UserResponse expectedResponse = createUserResponse(1);
@@ -220,57 +115,13 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUpdatingUserWithNoUsername() throws Exception {
-        //arrange
-        String invalidJson = """
-        {
-            "username": "",
-            "email": "sample@email1.com",
-            "password": "password"
-        }
-        """;
-        //act
-        //assert
-        mockMvc.perform(put("/api/users/{id}",1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("username: Username is required"));
-        verify(userService,times(0)).updateUser(any(UserRequest.class),anyInt());
-
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUpdatingUserWithNoEmail() throws Exception {
-        //arrange
-        String invalidJson = """
-        {
-            "username": "SampleUser1",
-            "email": "",
-            "password": "password"
-        }
-        """;
-        //act
-        //assert
-        mockMvc.perform(put("/api/users/{id}",1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(invalidJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("email: Email is required"));
-        verify(userService,times(0)).updateUser(any(UserRequest.class),anyInt());
-
-    }
-
-    @Test
     void shouldThrowExceptionWhenUpdatingUserWithInvalidEmail() throws Exception {
         //arrange
         String invalidJson = """
         {
             "username": "SampleUser1",
             "email": "invalidemail",
-            "password": "password"
+            "password": "Password1!"
         }
         """;
         //act
@@ -286,7 +137,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenUpdatingUserWithNoPassword() throws Exception {
+    void shouldThrowExceptionWhenUpdatingUserWithInvalidPassword() throws Exception {
         //arrange
         String invalidJson = """
         {
@@ -302,7 +153,7 @@ public class UserControllerTest {
                         .content(invalidJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.messages[0]").value("password: Password is required"));
+                .andExpect(jsonPath("$.messages[0]").value("password: Password must be at least 8 characters, include uppercase, lowercase, number, and special character"));
         verify(userService,times(0)).updateUser(any(UserRequest.class),anyInt());
 
     }

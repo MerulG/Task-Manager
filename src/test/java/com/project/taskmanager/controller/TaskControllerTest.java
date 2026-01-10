@@ -4,9 +4,12 @@ import com.project.taskmanager.dto.TaskRequest;
 import com.project.taskmanager.dto.TaskResponse;
 import com.project.taskmanager.enums.Priority;
 import com.project.taskmanager.enums.Status;
+import com.project.taskmanager.security.JwtProvider;
 import com.project.taskmanager.service.TaskService;
+import com.project.taskmanager.service.impl.ApiUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -23,7 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(TaskController.class) // Load only TaskController & MVC context
+@WebMvcTest(TaskController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class TaskControllerTest {
 
     @Autowired
@@ -31,6 +35,12 @@ class TaskControllerTest {
 
     @MockBean
     private TaskService taskService;
+
+    @MockBean
+    JwtProvider jwtProvider;
+
+    @MockBean
+    ApiUserDetailsService apiUserDetailsService;
 
     private TaskResponse createTaskResponse(Integer id){
         TaskResponse response = new TaskResponse();

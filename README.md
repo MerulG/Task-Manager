@@ -37,6 +37,14 @@ A production-ready **Task Manager REST API** built with **Spring Boot**, featuri
 - GitHub Actions CI pipeline (build + tests)
 - Cloud deployment (Render)
 
+### Security (Spring Security + JWT)
+- Stateless authentication using JWT
+- User registration and login endpoints
+- BCrypt password hashing
+- Role-based access control (USER / ADMIN)
+- Custom JWT authentication filter
+- Secured endpoints with method-level authorization
+
 ---
 
 ## Tech Stack
@@ -46,6 +54,8 @@ A production-ready **Task Manager REST API** built with **Spring Boot**, featuri
 - Spring Boot
 - Spring Web
 - Spring Data JPA
+- Spring Security
+- JWT
 
 ### **Database**
 - PostgreSQL

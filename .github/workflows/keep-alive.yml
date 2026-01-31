@@ -15,4 +15,4 @@ jobs:
         run: |
           echo "Pinging app..."
           curl -L --silent --show-error --fail \
-            https://task-manager-wc0c.onrender.com
+            https://task-manager-wc0c.onrender.com/api/health

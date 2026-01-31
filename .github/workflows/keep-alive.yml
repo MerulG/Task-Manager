@@ -2,7 +2,7 @@ name: Keep Render + Neon Alive
 
 on:
   schedule:
-    # Every 10 minutes
+    # Every 3 minutes
     - cron: "*/3 * * * *"
   workflow_dispatch:
 
